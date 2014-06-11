@@ -1,3 +1,4 @@
+require './piece'
 class Board
   attr_accessor :board
   
@@ -9,10 +10,10 @@ class Board
     game = Board.new
     starting_row = [Rook, Knight, Bishop, Queen, King, Bishop, Knight, Rook]
     starting_row.each_with_index do |piece_type, idx|
-      game.set_piece(piece_type, [0, idx], :white)
-      game.set_piece(Pawn, [1, idx], :white)
-      game.set_piece(Pawn, [6, idx], :black)
-      game.set_piece(piece_type, [7, idx], :black)
+      game.set_piece(piece_type, [0, idx], :black)
+      game.set_piece(Pawn, [1, idx], :black)
+      game.set_piece(Pawn, [6, idx], :white)
+      game.set_piece(piece_type, [7, idx], :white)
     end
     game
   end
@@ -26,6 +27,7 @@ class Board
   #   @board[x][y]
   # end
 
+ 
   def deep_dup
     copy_game = Board.build_starting_board
     copy_board = Array.new(8) { Array.new(8) { nil } }
@@ -59,9 +61,13 @@ class Board
   def in_check?(color) # this will be called on the deep dup board.
     # white_king = all_pieces_of(:white).select { |piece| piece.is_a?(King) }[0]
     # black_king = all_pieces_of(:black).select { |piece| piece.is_a?(King) }[0]
+    
     opposite = color == :black ? :white : :black
+    # puts color
+    # puts opposite
+    
     self.all_pieces_of(opposite).any? do |piece|
-      piece.moves.any? { |move| move == get_king(color).cur_pos }
+      piece.moves.any? { |move| move == self.get_king(color).cur_pos }
     end
   end
   
@@ -132,4 +138,9 @@ class Board
     end
     valid
   end
+  
+  def checkmate?(color)
+    if valid_moves(color).count.empty?
+      true
+    end
 end

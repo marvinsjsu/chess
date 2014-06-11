@@ -15,9 +15,21 @@ if $PROGRAM_NAME == __FILE__
   puts game.all_pieces
 end
 
-# load 'board.rb'
-# game = Board.build_starting_board
-# game.board
+load 'board.rb'
+game = Board.build_starting_board
+game.board
+
+game = Board.new
+game.set_piece(Rook, [4,4], :white)
+game.board
+game.board[4][4].moves
+
+game.set_piece(Pawn, [4, 3], :black)
+game.set_piece(King, [7,7], :white)
+
+game.valid_moves(:white)
+
+
 # 
 # # game.move!([1,0],[3,0])
 # # game.board
@@ -28,4 +40,4 @@ end
 # # game.board[2][0].moved
 # # game.board[1][1].moved
 # 
-# game.valid_moves(:black)
+game.valid_moves(:black)

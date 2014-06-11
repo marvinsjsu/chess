@@ -34,6 +34,30 @@ end
 
 class SlidingPiece < Piece
   MAX_STEPS = 7
+  
+  def moves
+    potential_pos = []
+    self.class::VECTORS.each do |vector|
+      y, x = @cur_pos
+      
+      self.class::MAX_STEPS.times do |idx|
+        new_x = x + ((idx + 1) * vector[1])
+        new_y = y + ((idx + 1) * vector[0])
+        if (0..7).include?(new_x) && (0..7).include?(new_y)
+          piece = @game.board[new_y][new_x]
+          if piece.nil?
+            potential_pos << [new_y, new_x]
+          elsif piece.color != self.color
+            potential_pos << [new_y, new_x]
+            break
+          else
+            break
+          end
+        end
+      end
+    end
+    potential_pos
+  end
 end
 
 class SteppingPiece < Piece
