@@ -41,3 +41,9 @@ game.valid_moves(:white)
 # # game.board[1][1].moved
 # 
 game.valid_moves(:black)
+
+
+game.move!([6,5], [5,5])
+game.move!([1,4], [3,4])
+game.move!([6,6], [4,6])
+game.move!([0,3], [4,7])

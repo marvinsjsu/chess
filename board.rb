@@ -122,8 +122,6 @@ class Board
       @board[cur_x][cur_y] = nil
       piece.cur_pos = [new_x, new_y]
       piece.moved = true if [Pawn, King, Rook].include?(piece.class)
-    else
-      puts "not valid!"
     end
   end
   
@@ -140,7 +138,6 @@ class Board
   end
   
   def checkmate?(color)
-    if valid_moves(color).count.empty?
-      true
-    end
+    valid_moves(color).empty?
+  end
 end

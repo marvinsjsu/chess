@@ -30,6 +30,11 @@ class Piece
   def to_s
     @symbol.to_s
   end
+  
+  def inspect
+    return self.class.to_s
+  end
+  
 end
 
 class SlidingPiece < Piece
@@ -109,19 +114,25 @@ class Pawn < Piece
  # @@diag = [[1, 1], [-1, 1], [1, -1], [-1,-1]] # B, W, B, W
   
   def moves
-    potential_pos = []
-    ORTH[0..1].each do |vector|
+    black_potential_pos, white_potential_pos = [], []
+    ORTH[0..1].each_with_index do |vector, orth_index|
       y, x = @cur_pos
       max_steps = @moved ? 1 : 2
       max_steps.times do |idx|
         new_x = x + ((idx + 1) * vector[1])
         new_y = y + ((idx + 1) * vector[0])
         if (0..7).include?(new_x) && (0..7).include?(new_y)
-          potential_pos << [new_y, new_x]
+          white_potential_pos << [new_y, new_x] if orth_index.odd?
+          black_potential_pos << [new_y, new_x] if orth_index.even?
         end
       end
     end
-    potential_pos + self.kills
+    
+    if self.color == :white
+      return white_potential_pos + self.kills
+    else
+      return black_potential_pos + self.kills
+    end
   end
   
   def kills
